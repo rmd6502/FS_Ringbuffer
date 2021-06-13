@@ -1,0 +1,30 @@
+#######################################
+# Syntax Coloring Map For FS_Ringbuffer
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+RBStatus        KEYWORD1
+FS_RingBuffer   KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin           KEYWORD2
+end             KEYWORD2
+write           KEYWORD2
+read            KEYWORD2
+readUntil       KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+RB_OK                   LITERAL1
+RB_INSUFFICIENT_SPACE   LITERAL1
+RB_WRITE_ERROR          LITERAL1
+RB_READ_ERROR           LITERAL1
+RB_INCONSISTENT_STATE   LITERAL1
