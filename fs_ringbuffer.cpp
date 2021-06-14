@@ -2,20 +2,23 @@
 
 #include "fs_ringbuffer.h"
 
-FS_RingBuffer::FS_RingBuffer(String name, uint32_t max_size_, FS *fs) : isValid(false), filename(name), fs(fs) {
-    if (!fs->exists(name)) {
-        buffer = fs->open(name, "w+");
+FS_RingBuffer::FS_RingBuffer(String name, uint32_t max_size_, FS *fs) : isValid(false), filename(name), fs(fs), max_size(max_size_) {}
+
+
+RBStatus FS_RingBuffer::begin(bool overwrite) {
+    if (!fs->exists(filename) || overwrite) {
+        buffer = fs->open(filename, "w+");
         if (!buffer) {
-            return;
+            return RB_INCONSISTENT_STATE;
         }
         isValid = true;
         head = tail = headerSize();
-        max_size = max_size_ + headerSize();
-        updateHeader();
+        max_size += headerSize();
+        return updateHeader();
     } else {
-        buffer = fs->open(name, "r+");
+        buffer = fs->open(filename, "r+");
         if (!buffer) {
-            return;
+            return RB_INCONSISTENT_STATE;
         }
         buffer.seek(0);
         if (buffer.available() >= headerSize()) {
@@ -28,14 +31,11 @@ FS_RingBuffer::FS_RingBuffer(String name, uint32_t max_size_, FS *fs) : isValid(
         } else {
             // Serial.println("header not found");
             head = tail = headerSize();
-            max_size = max_size_ + headerSize();
+            max_size += headerSize();
             updateHeader();
         }
         isValid = true;
     }
-}
-
-RBStatus FS_RingBuffer::begin(bool overwrite) {
     return RB_OK;
 }
 
