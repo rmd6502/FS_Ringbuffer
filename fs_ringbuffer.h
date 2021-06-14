@@ -33,7 +33,7 @@ class FS_RingBuffer {
         // Read exactly `length` bytes from the file.
         String read(uint32_t length);
         // Read until we see the terminator, including it in the string, or we read maxLength bytes.
-        //String readUntil(String terminator="\n", uint32_t maxLength = -1);
+        String readUntil(String terminator="\n", uint32_t maxLength = -1);
 
         // Remaining space in file.
         uint32_t freeSpace() const;

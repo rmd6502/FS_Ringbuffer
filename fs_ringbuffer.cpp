@@ -118,6 +118,16 @@ String FS_RingBuffer::read(uint32_t length) {
     return ret;
 }
 
+String FS_RingBuffer::readUntil(String delim, uint32_t maxLength) {
+    String ret;
+    while (freeSpace() > 0 && (maxLength == -1 || ret.length() < maxLength)) {
+        String b = read(1);
+        ret += b;
+        if (ret.endsWith(delim)) break;
+    }
+    return ret;
+}
+
 RBStatus FS_RingBuffer::updateHeader() {
     buffer.seek(0);
     buffer.write((byte *)&head, sizeof(uint32_t));
